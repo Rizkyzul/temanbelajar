@@ -115,11 +115,39 @@ function loadHistory() {
     }
 }
 
+// Function Baru dengan SweetAlert
 function confirmReset() {
-    if (confirm('Apakah kamu yakin ingin menghapus semua percakapan?')) {
-        localStorage.removeItem('chatHistory');
-        location.reload();
-    }
+    Swal.fire({
+        title: 'Mulai dari nol?',
+        text: "Semua obrolan seru kita akan dihapus, lho! Kamu yakin?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // Merah untuk bahaya
+        cancelButtonColor: '#4facfe', // Biru tema kamu
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Gak Jadi',
+        background: document.body.classList.contains('dark-mode') ? '#1a1a2e' : '#fff', // Auto Dark Mode
+        color: document.body.classList.contains('dark-mode') ? '#fff' : '#333' // Auto Text Color
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Hapus data
+            localStorage.removeItem('chatHistory');
+            
+            // Tampilkan pesan sukses sebentar
+            Swal.fire({
+                title: 'Bersih!',
+                text: 'Kita siap memulai petualangan baru! 🚀',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+                background: document.body.classList.contains('dark-mode') ? '#1a1a2e' : '#fff',
+                color: document.body.classList.contains('dark-mode') ? '#fff' : '#333'
+            }).then(() => {
+                // Refresh halaman setelah animasi selesai
+                location.reload();
+            });
+        }
+    });
 }
 
 // UI Functions
