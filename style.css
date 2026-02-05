@@ -22,27 +22,7 @@ body.dark-mode {
     background-image: radial-gradient(#2a2a40 1px, transparent 1px);
 }
 
-body.dark-mode .app-container {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-body.dark-mode #chat-form {
-    background: #0f3460;
-    border-color: #16213e;
-}
-
-body.dark-mode #user-input {
-    color: white;
-}
-
-body.dark-mode .ai-message .bubble {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-body.dark-mode .bubble code {
-    background: rgba(255, 255, 255, 0.1);
-}
-
+/* Reset dasar */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -55,16 +35,20 @@ body {
     background-image: radial-gradient(#d4e4ef 1px, transparent 1px);
     background-size: 20px 20px;
     color: var(--text-color);
+    /* Flexbox untuk menengahkan di Desktop */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Gunakan min-height */
+    overflow: hidden; /* Mencegah scroll pada body utama */
 }
 
+/* Container Utama */
 .app-container {
     width: 100%;
     max-width: 480px;
-    height: 95vh;
+    /* Ubah height agar responsif di desktop */
+    height: 95vh; 
     background: var(--chat-bg);
     border-radius: var(--border-radius);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -75,7 +59,25 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/* Header */
+/* --- LOGIKA DARK MODE --- */
+body.dark-mode .app-container {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+body.dark-mode #chat-form {
+    background: #0f3460;
+    border-color: #16213e;
+}
+body.dark-mode #user-input {
+    color: white;
+}
+body.dark-mode .ai-message .bubble {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+body.dark-mode .bubble code {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- HEADER --- */
 .chat-header {
     background: var(--primary-gradient);
     padding: 15px 20px;
@@ -85,12 +87,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0; /* Header tidak boleh mengecil */
 }
 
-.header-actions {
-    display: flex;
-    gap: 10px;
-}
+.header-actions { display: flex; gap: 10px; }
 
 .icon-btn {
     background: rgba(255, 255, 255, 0.2);
@@ -105,17 +105,9 @@ body {
     align-items: center;
     transition: background 0.2s;
 }
+.icon-btn:hover { background: rgba(255, 255, 255, 0.4); }
 
-.icon-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
+.logo-area { display: flex; align-items: center; gap: 12px; }
 .logo-emoji {
     font-size: 1.8rem;
     background: rgba(255, 255, 255, 0.25);
@@ -127,27 +119,21 @@ body {
     align-items: center;
     color: white;
 }
+.header-text h1 { font-family: 'Fredoka', sans-serif; font-size: 1.4rem; font-weight: 600; }
+.header-text p { font-size: 0.85rem; opacity: 0.9; }
 
-.header-text h1 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-}
-
-.header-text p {
-    font-size: 0.85rem;
-    opacity: 0.9;
-}
-
-/* Chat Area */
+/* --- CHAT AREA (SCROLLABLE) --- */
 .chat-area {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1; /* Mengisi sisa ruang */
+    overflow-y: auto; /* Hanya area ini yang scroll */
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
     scroll-behavior: smooth;
+    /* Perbaikan scroll bar agar tidak menempel */
+    scrollbar-width: thin;
+    padding-bottom: 20px;
 }
 
 .message {
@@ -157,35 +143,19 @@ body {
     max-width: 85%;
     animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
-.message.user-message {
-    align-self: flex-end;
-    flex-direction: row-reverse;
-}
+.message.user-message { align-self: flex-end; flex-direction: row-reverse; }
 
 .avatar {
-    width: 35px;
-    height: 35px;
+    width: 35px; height: 35px;
     background: #FFD54F;
-    /* Yellow for friendly robot */
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; justify-content: center; align-items: center;
     font-size: 1.3rem;
-    /* Adjusted for icons */
     flex-shrink: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     color: #5d4037;
-    /* Brownish contrast for yellow */
 }
-
-.user-message .avatar {
-    background: #4facfe;
-    /* Blue for user */
-    color: white;
-    font-size: 1.3rem;
-}
+.user-message .avatar { background: #4facfe; color: white; font-size: 1.3rem; }
 
 .bubble {
     padding: 12px 16px;
@@ -196,170 +166,91 @@ body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     min-width: 60px;
 }
+.ai-message .bubble { background: var(--ai-bubble); border-bottom-left-radius: 4px; border: 1px solid #e0e0e0; }
+.user-message .bubble { background: var(--primary-gradient); color: white; border-bottom-right-radius: 4px; }
+.bubble p { margin-bottom: 0.5em; }
+.bubble p:last-child { margin-bottom: 0; }
 
-/* Copy Button */
+/* Copy Button Styling */
 .copy-btn {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: white;
-    border: 1px solid #eee;
-    border-radius: 50%;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
-    font-size: 0.9rem;
-    color: #666;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: absolute; top: -10px; right: -10px;
+    background: white; border: 1px solid #eee; border-radius: 50%;
+    width: 26px; height: 26px;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer; opacity: 0; transition: opacity 0.2s, transform 0.2s;
+    font-size: 0.9rem; color: #666; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+.message:hover .copy-btn { opacity: 1; }
+.copy-btn:active { transform: scale(0.9); }
+body.dark-mode .copy-btn { background: #2a2a40; border-color: #333; color: #ccc; }
 
-.message:hover .copy-btn {
-    opacity: 1;
-}
-
-.copy-btn:active {
-    transform: scale(0.9);
-}
-
-body.dark-mode .copy-btn {
-    background: #2a2a40;
-    border-color: #333;
-    color: #ccc;
-}
-
-.ai-message .bubble {
-    background: var(--ai-bubble);
-    border-bottom-left-radius: 4px;
-    border: 1px solid #e0e0e0;
-}
-
-.user-message .bubble {
-    background: var(--primary-color);
-    color: white;
-    border-bottom-right-radius: 4px;
-    background: var(--primary-gradient);
-}
-
-.bubble p {
-    margin-bottom: 0.5em;
-}
-
-.bubble p:last-child {
-    margin-bottom: 0;
-}
-
-/* Typing Indicator */
+/* Typing & Animation */
 .typing-indicator span {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background-color: #aaa;
-    border-radius: 50%;
-    animation: typing 1.4s infinite ease-in-out both;
-    margin: 0 2px;
+    display: inline-block; width: 6px; height: 6px; background-color: #aaa; border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out both; margin: 0 2px;
 }
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+@keyframes popIn { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-.typing-indicator span:nth-child(1) {
-    animation-delay: -0.32s;
-}
-
-.typing-indicator span:nth-child(2) {
-    animation-delay: -0.16s;
-}
-
-@keyframes typing {
-
-    0%,
-    80%,
-    100% {
-        transform: scale(0);
-    }
-
-    40% {
-        transform: scale(1);
-    }
-}
-
-@keyframes popIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Input Area */
+/* --- INPUT AREA --- */
 .input-area {
     padding: 15px;
-    background: white;
+    background: var(--chat-bg); /* Pastikan background sama dengan container */
     border-top: 1px solid #eee;
+    flex-shrink: 0; /* Input area tidak boleh mengecil */
+    position: relative; /* Agar z-index bekerja jika perlu */
+    z-index: 20;
 }
+body.dark-mode .input-area { border-color: rgba(255,255,255,0.1); }
 
 #chat-form {
-    display: flex;
-    gap: 10px;
-    background: #f5f5f5;
-    padding: 5px;
-    border-radius: 30px;
-    border: 1px solid #e0e0e0;
+    display: flex; gap: 10px; background: #f5f5f5;
+    padding: 5px; border-radius: 30px; border: 1px solid #e0e0e0;
     transition: all 0.3s ease;
 }
-
-#chat-form:focus-within {
-    border-color: #4facfe;
-    background: white;
-    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.15);
-}
-
-#user-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 10px 15px;
-    font-family: inherit;
-    font-size: 1rem;
-    outline: none;
-}
-
+#chat-form:focus-within { border-color: #4facfe; background: white; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.15); }
+#user-input { flex: 1; border: none; background: transparent; padding: 10px 15px; font-family: inherit; font-size: 1rem; outline: none; }
 #send-btn {
-    background: var(--primary-gradient);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.2s;
+    background: var(--primary-gradient); border: none; width: 40px; height: 40px;
+    border-radius: 50%; color: white; display: flex; justify-content: center; align-items: center;
+    cursor: pointer; transition: transform 0.2s;
 }
-
-#send-btn:hover {
-    transform: scale(1.05);
-}
-
-#send-btn:active {
-    transform: scale(0.95);
-}
+#send-btn:hover { transform: scale(1.05); }
+#send-btn:active { transform: scale(0.95); }
 
 /* Markdown Styles */
-.bubble code {
-    background: rgba(0, 0, 0, 0.05);
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-family: monospace;
-}
+.bubble code { background: rgba(0, 0, 0, 0.05); padding: 2px 4px; border-radius: 4px; font-family: monospace; }
+.bubble strong { font-weight: 700; }
 
-.bubble strong {
-    font-weight: 700;
+/* =========================================
+   FIX RESPONSIVE (HP) 
+   ========================================= */
+@media screen and (max-width: 600px) {
+    body {
+        align-items: flex-start; /* Hapus centering vertical */
+        background-color: var(--chat-bg); /* Samakan background body dgn chat */
+    }
+
+    .app-container {
+        width: 100%;
+        max-width: 100%;
+        
+        /* KUNCI PERBAIKAN: */
+        height: 100vh; /* Fallback */
+        height: 100dvh; /* Dynamic Viewport Height (menyesuaikan address bar browser HP) */
+        
+        border-radius: 0; /* Hapus sudut bulat */
+        border: none;
+        box-shadow: none;
+    }
+
+    .chat-area {
+        padding: 15px; /* Sedikit kurangi padding di HP */
+    }
+
+    .message {
+        max-width: 90%; /* Gelembung chat lebih lebar di HP */
+    }
 }
